@@ -1,2 +1,2 @@
-[phases.setup] 
-nixPkgs = ["qpdf", "poppler_utils", "ghostscript"] 
+[phases.setup]
+nixPkgs = ["ghostscript", "poppler_utils"]
