@@ -1,6 +1,7 @@
-flask>=3.0.0
-pypdf>=4.0.0
-pdfplumber>=0.10.0
-reportlab>=4.0.0
-Pillow>=10.0.0
+flask
+flask-cors
+pypdf
+reportlab
+pdfplumber
+Pillow
 gunicorn
