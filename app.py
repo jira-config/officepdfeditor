@@ -21,7 +21,7 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.colors import Color
 from PIL import Image
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__, static_folder="static", static_url_path="")
 app.config["MAX_CONTENT_LENGTH"] = 150 * 1024 * 1024   # 150 MB
 
 UPLOAD_DIR = Path(__file__).parent / "uploads"
@@ -50,7 +50,7 @@ def serve_frontend(path):
     index = static_dir / "index.html"
     if index.exists():
         return send_from_directory(str(static_dir), "index.html")
-    return jsonify({"status": "OfficePDFEditor API running", "version": "1.0"}), 200
+    return send_from_directory(app.static_folder, "index.html"), "version": "1.0"}), 200
 
 def save_upload(file_storage) -> Path:
     uid = uuid.uuid4().hex[:12]
