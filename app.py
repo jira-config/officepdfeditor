@@ -21,6 +21,7 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.colors import Color
 from PIL import Image
 
+# Fixed static folder config for Railway
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config["MAX_CONTENT_LENGTH"] = 150 * 1024 * 1024   # 150 MB
 
@@ -40,6 +41,8 @@ def cors(response):
 @app.after_request
 def after(r): return cors(r)
 
+# ─── FRONTEND SERVING (FIXED) ───────────────────────────────
+
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_frontend(path):
@@ -47,10 +50,15 @@ def serve_frontend(path):
     target = static_dir / path
     if path and target.exists():
         return send_from_directory(str(static_dir), path)
-    index = static_dir / "index.html"
-    if index.exists():
-        return send_from_directory(str(static_dir), "index.html")
-    return send_from_directory(app.static_folder, "index.html"), "version": "1.0"}), 200
+    
+    # Hamesha index.html bhejega agar koi route match na ho
+    return send_from_directory(str(static_dir), "index.html")
+
+@app.route("/api/status", methods=["GET"])
+def api_status():
+    return jsonify({"status": "OfficePDFEditor API running", "version": "1.0"}), 200
+
+# ────────────────────────────────────────────────────────────
 
 def save_upload(file_storage) -> Path:
     uid = uuid.uuid4().hex[:12]
@@ -487,7 +495,7 @@ def api_add_page_numbers():
 
             margin = 28
             pos_map = {
-                "bottom-center": (pg_w/2,       margin,        "center"),
+                "bottom-center": (pg_w/2,        margin,        "center"),
                 "bottom-right":  (pg_w - margin, margin,        "right"),
                 "bottom-left":   (margin,        margin,        "left"),
                 "top-center":    (pg_w/2,        pg_h - margin, "center"),
